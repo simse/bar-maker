@@ -1,26 +1,43 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Bar Maker</h1>
+
+    <BarEditor />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BarEditor from "@/components/BarEditor"
 
 export default {
-  name: 'App',
+  name: 'Bar Maker',
   components: {
-    HelloWorld
+    BarEditor
   }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #111;
+  background: #fcfeff;
+  width: 100vw;
+}
+
+h1 {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
