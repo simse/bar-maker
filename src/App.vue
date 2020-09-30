@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>Bar Maker</h1>
-
     <BarEditor />
   </div>
 </template>
@@ -32,9 +30,8 @@ body {
   font-family: Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #111;
+  color: #000;
   background: #fcfeff;
-  //width: 100vw;
 }
 
 h1 {

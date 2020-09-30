@@ -4,7 +4,9 @@
             <h3>Data input</h3>
 
             <div class="data">
-                <div class="point" v-for="point in parts" :key="point.index">
+                <div class="point" v-for="(point, index) in parts" :key="index">
+                    <div class="color" :style="{background: colors[index]}"></div>
+
                     <form>
                         <input type="text" v-model="point.name" placeholder="Titel" />
 
@@ -13,14 +15,14 @@
                         <input type="number" v-model="point.size" placeholder="Størelse i hele tal" />
                     </form>
 
-                    <button @click="deleteDataPoint(point.index)">Delete data point</button>
+                    <button @click="deleteDataPoint(index)">Delete data point</button>
                 </div>
 
                 <button @click="addDatapoint">Add data point</button>
             </div>
         </div>
 
-        <div class="visual">
+        <div class="visual" ref="visualization">
             <div class="bar">
                 <div
                     class="part"
@@ -29,16 +31,17 @@
                     :style="{width: part.size + '%', background: part.color}"
                     
                 >
-                    <h2 class="percentage">{{ part.humanReadablePercentage }}%</h2>
+                    <h2 class="percentage" v-if="part.size > 5">{{ part.humanReadablePercentage }}%</h2>
 
                     <div :class="{meta: true, above: part.position === 0}" >
                         <div class="line" v-if="part.position == 1"></div>
 
                         <div class="inner">
                             <h2>{{ part.name }}</h2>
-                            <p>{{ part.desc }}</p>
 
-                            <!--span>{{ part.position }} - {{ part.size }}%</span-->
+                            <span>{{ part.humanReadablePercentage }}%</span>
+
+                            <p>{{ part.desc }}</p>
                         </div>
 
                         <div class="line" v-if="part.position == 0"></div>
@@ -54,6 +57,7 @@ export default {
     name: "BarEditor",
     data() {
         return {
+            output: null,
             colors: [
                 "#ffadad",
                 "#ffd6a5",
@@ -66,19 +70,19 @@ export default {
             ],
             parts: [
                 {
-                    index: 0,
+                    //index: 0,
                     name: "test",
                     desc: "this is a test description",
                     size: 900,
                 },
                 {
-                    index: 1,
+                    //index: 1,
                     name: "test",
                     desc: "this is a test description",
                     size: 400,
                 },
                 {
-                    index: 2,
+                    //index: 2,
                     name: "test1",
                     desc: "this is a test description, taking up two thirds",
                     size: 200,
@@ -94,22 +98,34 @@ export default {
                 totalSize += parseInt(part.size, 10)
             })
 
+            //Determine percentage precision
+            let sizeLength = totalSize.toString().length
+            let multiplier = "10"
+            let divider = "10"
+
+            for(let i = 0; i < sizeLength; i++) {
+                multiplier += "0"
+            }
+
+            for(let i = 0; i < sizeLength - 2; i++) {
+                divider += "0"
+            }
+
+            multiplier = parseInt(multiplier, 10)
+            divider = parseInt(divider, 10)
+
             let partsWithCalculatedPercentage  = []
             let lastPosition = 0
             let lastColorIndex = -1
 
-            //console.log(totalSize)
-
             this.parts.forEach(part => {
-                //console.log(parseInt(part.size, 10))
-
                 let newPart = {
                     name: part.name,
                     desc: part.desc,
                     size: (parseInt(part.size, 10) / totalSize) * 100,
                     position: (lastPosition === 1 ? 0 : 1),
                     color: this.colors[lastColorIndex + 1],
-                    humanReadablePercentage: Math.round((part.size / totalSize) * 1000) / 10
+                    humanReadablePercentage: Math.round((part.size / totalSize) * multiplier) / divider
                 }
 
                 lastPosition = (lastPosition === 1 ? 0 : 1)
@@ -127,11 +143,13 @@ export default {
         },
         addDatapoint() {
             let pointTemplate = {
-                index: this.parts.length,
-                name: "Data point " + this.parts.length,
+                //index: this.parts.length,
+                name: "Data point " + (this.parts.length + 1),
                 desc: "Edit this description",
                 size: 300
             }
+
+            console.log(pointTemplate.index)
 
             this.parts.push(pointTemplate)
         }
@@ -155,12 +173,14 @@ $popup-spacing: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 100vh;
 }
 
 .input {
     background:  #D7F3FD;
     padding: 20px;
+    max-height: 100vh;
+    overflow-y: scroll;
 
     h3 {
         //font-weight: 400;
@@ -175,6 +195,13 @@ $popup-spacing: 40px;
 
         h4 {
             font-weight: 400;
+        }
+
+        .color {
+            width: 100%;
+            height: 8px;
+            border-radius: 8px;
+            margin-bottom: 12px;
         }
 
         form {
@@ -271,7 +298,7 @@ $popup-spacing: 40px;
 
     h2 {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
 
     p {
@@ -279,9 +306,10 @@ $popup-spacing: 40px;
     }
 
     span {
-        opacity: 0.5;
-        margin-top: 20px;
+        opacity: 0.8;
+        margin-top: 10px;
         display: block;
+        font-size: 1.1rem;
     }
 
     .line {
