@@ -34,7 +34,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #111;
   background: #fcfeff;
-  width: 100vw;
+  //width: 100vw;
 }
 
 h1 {

@@ -148,11 +148,14 @@ $popup-spacing: 40px;
     //margin: 0 auto;
     //padding: 300px 0;
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 19% 80%;
 }
 
 .visual {
-    padding: 300px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
 }
 
 .input {
@@ -200,8 +203,8 @@ $popup-spacing: 40px;
 
 .bar {
     margin: 0 auto;
-    max-width: 60vw;
-    width: 100%;
+    //max-width: 60vw;
+    width: 80%;
     //margin: 50px;
     height: $bar-height;
     //background: red;
