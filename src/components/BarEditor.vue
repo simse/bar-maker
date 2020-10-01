@@ -29,14 +29,13 @@
                     v-for="part in partsWithPercentage"
                     :key="part.name"
                     :style="{width: part.size + '%', background: part.color}"
-                    
                 >
                     <h2 class="percentage" v-if="part.size > 5">{{ part.humanReadablePercentage }}%</h2>
 
-                    <div :class="{meta: true, above: part.position === 0}" >
+                    <div :class="{meta: true, above: part.position === 0}">
                         <div class="line" v-if="part.position == 1"></div>
 
-                        <div class="inner">
+                        <div class="inner" :style="{background: part.color}">
                             <h2>{{ part.name }}</h2>
 
                             <span>{{ part.humanReadablePercentage }}%</span>
